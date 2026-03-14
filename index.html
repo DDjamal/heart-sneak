@@ -4,14 +4,66 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>HeartSync Redirect</title>
+  <style>
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background-color: #f0f0f0;
+      text-align: center;
+      color: #333;
+    }
+    .container {
+      background: #fff;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    }
+    a.button {
+      display: inline-block;
+      margin-top: 20px;
+      padding: 12px 24px;
+      background-color: #007bff;
+      color: #fff;
+      text-decoration: none;
+      border-radius: 8px;
+      transition: background 0.3s;
+    }
+    a.button:hover { background-color: #0056b3; }
+  </style>
 </head>
 <body>
-  <p>Redirecting to HeartSync...</p>
+  <div class="container">
+    <h1>Welcome to HeartSync 💜</h1>
+    <p>Redirecting to your app…</p>
+    <p>If nothing happens, click below:</p>
+    <a class="button" id="openApp" href="#">Open HeartSync</a>
+  </div>
 
   <script>
-    // فتح التطبيق مباشرة باستخدام Custom Scheme
-    const appScheme = "heartsync://join"; // الرابط من AndroidManifest.xml
+    // === إعدادات التطبيق ===
+    const appScheme = "heartsync://join"; // Custom Scheme من AndroidManifest
+    const bridgeURL = window.location.href; // URL صفحة GitHub
+    const timeout = 1500; // وقت انتظار محاولة الفتح
+
+    // محاولة فتح التطبيق مباشرة
+    const now = Date.now();
     window.location = appScheme + window.location.search;
+
+    // إذا لم يفتح التطبيق بعد 1.5 ثانية، يبقى المستخدم على الصفحة ويمكنه الضغط على الزر
+    setTimeout(() => {
+      if (Date.now() - now < timeout) {
+        console.log("App not installed or not responding");
+      }
+    }, timeout);
+
+    // زر فتح التطبيق يدويًا
+    document.getElementById("openApp").addEventListener("click", () => {
+      window.location = appScheme + window.location.search;
+    });
   </script>
 </body>
 </html>
