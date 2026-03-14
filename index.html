@@ -22,48 +22,35 @@
       border-radius: 12px;
       box-shadow: 0 5px 15px rgba(0,0,0,0.1);
     }
-    a.button {
-      display: inline-block;
-      margin-top: 20px;
-      padding: 12px 24px;
-      background-color: #007bff;
-      color: #fff;
-      text-decoration: none;
-      border-radius: 8px;
-      transition: background 0.3s;
+    p {
+      margin: 10px 0;
     }
-    a.button:hover { background-color: #0056b3; }
   </style>
 </head>
 <body>
   <div class="container">
     <h1>Welcome to HeartSync 💜</h1>
-    <p>Redirecting to your app…</p>
-    <p>If nothing happens, click below:</p>
-    <a class="button" id="openApp" href="#">Open HeartSync</a>
+    <p>Trying to open your app…</p>
+    <p>If nothing happens, make sure HeartSync is installed.</p>
   </div>
 
   <script>
-    // === إعدادات التطبيق ===
-    const appScheme = "heartsync://join"; // Custom Scheme من AndroidManifest
-    const bridgeURL = window.location.href; // URL صفحة GitHub
-    const timeout = 1500; // وقت انتظار محاولة الفتح
+    // رابط التطبيق من Custom Scheme
+    const appScheme = "heartsync://join";
+    // تمرير أي query parameters موجودة
+    const urlWithParams = appScheme + window.location.search;
 
-    // محاولة فتح التطبيق مباشرة
     const now = Date.now();
-    window.location = appScheme + window.location.search;
+    // محاولة فتح التطبيق مباشرة
+    window.location = urlWithParams;
 
-    // إذا لم يفتح التطبيق بعد 1.5 ثانية، يبقى المستخدم على الصفحة ويمكنه الضغط على الزر
+    // إذا التطبيق غير مثبت، يبقى المستخدم في الصفحة
     setTimeout(() => {
-      if (Date.now() - now < timeout) {
-        console.log("App not installed or not responding");
+      if (Date.now() - now < 1500) {
+        console.log("App not installed or did not respond");
+        // هنا يمكنك إضافة رسالة إضافية أو زر لاحقًا
       }
-    }, timeout);
-
-    // زر فتح التطبيق يدويًا
-    document.getElementById("openApp").addEventListener("click", () => {
-      window.location = appScheme + window.location.search;
-    });
+    }, 1500);
   </script>
 </body>
 </html>
